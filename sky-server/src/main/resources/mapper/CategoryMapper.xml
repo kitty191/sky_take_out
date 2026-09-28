@@ -21,6 +21,7 @@
             <if test="updateUser != null">update_user = #{updateUser},</if>
         </set>
         where id = #{id}
+        order by sort asc
     </update>
 
     <!--    分类分页查询-->
