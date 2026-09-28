@@ -10,4 +10,12 @@ public interface CategoryService {
      * @param category
      */
     void addCategory(Category category);
+
+    /**
+     * 启用/禁用分类
+     *
+     * @param status
+     * @param id
+     */
+    void startOrStop(Integer status, Long id);
 }

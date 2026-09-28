@@ -5,10 +5,7 @@ import com.sky.result.Result;
 import com.sky.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/category")
@@ -30,8 +27,23 @@ public class CategoryController {
     @PostMapping
     @ApiOperation("新增分类")
     public Result addCategory(@RequestBody Category category) {
-        log.info("新增分类：{}",category);
+        log.info("新增分类：{}", category);
         categoryService.addCategory(category);
+        return Result.success();
+    }
+
+    /**
+     * 启用/禁用分类
+     *
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用/禁用分类")
+    public Result startOrStop(@PathVariable Integer status, Long id) {
+        log.info("启用/禁用分类:{},{}", status, id);
+        categoryService.startOrStop(status, id);
         return Result.success();
     }
 
