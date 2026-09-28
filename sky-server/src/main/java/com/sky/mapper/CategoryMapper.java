@@ -1,5 +1,7 @@
 package com.sky.mapper;
 
+import com.github.pagehelper.Page;
+import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +20,6 @@ public interface CategoryMapper {
      * @param category
      */
     void update(Category category);
+
+    Page<Category> query(CategoryPageQueryDTO categoryPageQueryDTO);
 }

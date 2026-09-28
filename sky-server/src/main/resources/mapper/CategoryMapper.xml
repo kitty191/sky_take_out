@@ -23,4 +23,17 @@
         where id = #{id}
     </update>
 
-</mapper>
+    <!--    分类分页查询-->
+    <select id="query" resultType="com.sky.entity.Category">
+        select * from category
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="type != null and type != ''">
+                and type =#{type}
+            </if>
+        </where>
+    </select>
+
+        </mapper>

@@ -1,6 +1,8 @@
 package com.sky.controller.admin;
 
+import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
@@ -46,5 +48,21 @@ public class CategoryController {
         categoryService.startOrStop(status, id);
         return Result.success();
     }
+
+
+    /**
+     * 分类分页查询
+     *
+     * @param categoryPageQueryDTO
+     * @return
+     */
+    @GetMapping("/page")
+    @ApiOperation("分类分页查询")
+    public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO) {
+        log.info("分类分页查询:{}", categoryPageQueryDTO);
+        PageResult pageResult = categoryService.page(categoryPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
 
 }
