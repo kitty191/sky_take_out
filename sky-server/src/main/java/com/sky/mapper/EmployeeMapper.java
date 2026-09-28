@@ -40,6 +40,7 @@ public interface EmployeeMapper {
 
     /**
      * 启用或禁用员工帐号
+     * 更新员工信息
      *
      * @param employee
      */
