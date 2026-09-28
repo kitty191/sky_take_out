@@ -97,8 +97,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setUpdateUser(BaseContext.getCurrentId());
 
-        BaseContext.removeCurrentId();
-
         employeeMapper.insert(employee);
     }
 
@@ -139,6 +137,22 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .build();
 
         employeeMapper.update(employee);
+    }
+
+    /**
+     * 根据id查询员工信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        if (employee == null) {
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
+        }
+        employee.setPassword("****");
+        return employee;
     }
 
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,6 +23,20 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 
     @Autowired
     private JwtProperties jwtProperties;
+
+    /**
+     * 请求处理完成后清理 ThreadLocal，避免线程复用导致脏数据
+     *
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        BaseContext.removeCurrentId();
+    }
 
     /**
      * 校验jwt
@@ -47,7 +62,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("当前员工id：", empId);
+            log.info("当前员工id：{}", empId);
             BaseContext.setCurrentId(empId);
             //3、通过，放行
             return true;
@@ -57,4 +72,6 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             return false;
         }
     }
+
+
 }
