@@ -22,4 +22,12 @@ public interface CategoryMapper {
     void update(Category category);
 
     Page<Category> query(CategoryPageQueryDTO categoryPageQueryDTO);
+
+
+    /**
+     * 根据id删除分类
+     *
+     * @param id
+     */
+    void deleteById(Long id);
 }

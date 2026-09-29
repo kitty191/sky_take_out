@@ -21,8 +21,12 @@
             <if test="updateUser != null">update_user = #{updateUser},</if>
         </set>
         where id = #{id}
-        order by sort asc
     </update>
+
+    <!--    根据ID删除分类-->
+    <delete id="deleteById">
+        delete  from category where id = #{id}
+    </delete>
 
     <!--    分类分页查询-->
     <select id="query" resultType="com.sky.entity.Category">
@@ -35,6 +39,7 @@
                 and type =#{type}
             </if>
         </where>
+        order by sort asc
     </select>
 
-        </mapper>
+</mapper>

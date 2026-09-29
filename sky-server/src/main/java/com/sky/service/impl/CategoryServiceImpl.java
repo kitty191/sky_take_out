@@ -2,12 +2,16 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
+import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
@@ -19,9 +23,13 @@ import java.time.LocalDateTime;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
+    private final DishMapper dishMapper;
+    private final SetmealMapper setmealMapper;
 
-    public CategoryServiceImpl(CategoryMapper categoryMapper) {
+    public CategoryServiceImpl(CategoryMapper categoryMapper, DishMapper dishMapper, SetmealMapper setmealMapper) {
         this.categoryMapper = categoryMapper;
+        this.dishMapper = dishMapper;
+        this.setmealMapper = setmealMapper;
     }
 
     /**
@@ -89,5 +97,37 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdateUser(BaseContext.getCurrentId());
 
         categoryMapper.update(category);
+    }
+
+
+    /**
+     * 根据id删除分类
+     *
+     * @param id
+     */
+    @Override
+    public void deleteById(Long id) {
+        /*
+          判断当前分类是否关联了菜品
+          倘若关联抛出异常
+         */
+        Integer dishCount = dishMapper.countByCategoryId(id);
+        if (dishCount > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);
+        }
+
+        /*
+          判断当前分类是否关联了套餐
+          倘若关联抛出异常
+         */
+        Integer setmealCount = setmealMapper.countByCategoryId(id);
+        if (setmealCount > 0) {
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
+        }
+
+        /*
+          当前分类既没有关联菜品也没有关联套餐，正常删除
+         */
+        categoryMapper.deleteById(id);
     }
 }
