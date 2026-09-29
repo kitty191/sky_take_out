@@ -49,6 +49,7 @@
         select *
         from category
         where type = #{type}
+        order by sort asc
     </select>
 
 </mapper>

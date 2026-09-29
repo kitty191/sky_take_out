@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -132,7 +133,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getByType(Integer type) {
+    public List<Category> getByType(Integer type) {
         return categoryMapper.getByType(type);
     }
 }
