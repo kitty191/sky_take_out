@@ -130,4 +130,9 @@ public class CategoryServiceImpl implements CategoryService {
          */
         categoryMapper.deleteById(id);
     }
+
+    @Override
+    public Category getByType(Integer type) {
+        return categoryMapper.getByType(type);
+    }
 }
