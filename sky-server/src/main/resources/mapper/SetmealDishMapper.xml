@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.SetmealDishMapper">
+
+    <!--筛选没有在套餐内的菜品id-->
+    <select id="getValidId" resultType="java.lang.Long">
+        select d.id
+        from dish d
+        where d.id in
+        <foreach collection="validStatusDish" open="(" separator="," close=")" item="dishId">
+            #{dishId}
+        </foreach>
+        and not exists(
+        select 1 from setmeal_dish sd where sd.dish_id=d.id
+        )
+    </select>
+</mapper>

@@ -13,6 +13,14 @@
                 #{createUser}, #{updateUser})
     </insert>
 
+    <!--    根据有效ID删除菜品-->
+    <delete id="deleteById">
+        delete from dish where id in
+        <foreach collection="validId" separator="," item="id" open="(" close=")">
+                      #{id}
+        </foreach>
+    </delete>
+
     <!--    菜品分页查询-->
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
         select d.*, c.name categoryName
@@ -30,6 +38,17 @@
             </if>
         </where>
         order by d.create_time desc
+    </select>
+
+    <!--    获得停售的菜品-->
+    <select id="getValidStatusDishId" resultType="java.lang.Long">
+        select id
+        from dish
+        where status = 0
+        and id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>
