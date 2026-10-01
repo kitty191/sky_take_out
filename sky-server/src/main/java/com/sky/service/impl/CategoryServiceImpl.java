@@ -41,10 +41,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void addCategory(Category category) {
         category.setStatus(StatusConstant.DISABLE);
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
-        category.setCreateUser(BaseContext.getCurrentId());
-        category.setUpdateUser(BaseContext.getCurrentId());
+//        category.setCreateTime(LocalDateTime.now());
+//        category.setUpdateTime(LocalDateTime.now());
+//        category.setCreateUser(BaseContext.getCurrentId());
+//        category.setUpdateUser(BaseContext.getCurrentId());
 
         categoryMapper.add(category);
     }
@@ -60,8 +60,8 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = Category.builder()
                 .status(status)
                 .id(id)
-                .updateUser(BaseContext.getCurrentId())
-                .updateTime(LocalDateTime.now())
+//                .updateUser(BaseContext.getCurrentId())
+//                .updateTime(LocalDateTime.now())
                 .build();
 
         categoryMapper.update(category);
@@ -94,8 +94,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         BeanUtils.copyProperties(categoryDTO, category);
 
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+//        category.setUpdateTime(LocalDateTime.now());
+//        category.setUpdateUser(BaseContext.getCurrentId());
 
         categoryMapper.update(category);
     }
@@ -132,6 +132,13 @@ public class CategoryServiceImpl implements CategoryService {
         categoryMapper.deleteById(id);
     }
 
+
+    /**
+     * 根据类型查询
+     *
+     * @param type
+     * @return
+     */
     @Override
     public List<Category> getByType(Integer type) {
         return categoryMapper.getByType(type);
