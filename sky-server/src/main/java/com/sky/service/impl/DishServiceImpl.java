@@ -104,7 +104,7 @@ public class DishServiceImpl implements DishService {
         排除在售的菜品
          */
         List<Long> validStatusDish = dishMapper.getValidStatusDishId(ids);
-        if(validStatusDish.size()<ids.size()){
+        if (validStatusDish.size() < ids.size()) {
             throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
         }
 
@@ -112,7 +112,7 @@ public class DishServiceImpl implements DishService {
         排除套餐内的菜品
          */
         List<Long> validId = setmealDishMapper.getValidId(validStatusDish);
-        if(validId.size()<validStatusDish.size()){
+        if (validId.size() < validStatusDish.size()) {
             throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
 
@@ -121,6 +121,26 @@ public class DishServiceImpl implements DishService {
          */
         dishMapper.deleteById(validId);
         dishFlavourMapper.deleteById(validId);
+    }
+
+
+    /**
+     * 根据ID查询菜品
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public DishVO getById(Long id) {
+        DishVO dishVO = dishMapper.getById(id);
+
+        if (dishVO == null) {
+            return null;
+        }
+
+        dishVO.setFlavors(dishFlavourMapper.getDishFlavourById(id));
+
+        return dishVO;
     }
 }
 

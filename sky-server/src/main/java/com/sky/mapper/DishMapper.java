@@ -44,6 +44,7 @@ public interface DishMapper {
 
     /**
      * 获得停售的菜品
+     *
      * @param ids
      * @return
      */
@@ -52,7 +53,17 @@ public interface DishMapper {
 
     /**
      * 根据有效ID删除菜品
+     *
      * @param validId
      */
     void deleteById(List<Long> validId);
+
+
+    /**
+     * 根据ID查询菜品
+     *
+     * @param id
+     * @return
+     */
+    DishVO getById(Long id);
 }
