@@ -19,7 +19,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -141,6 +140,33 @@ public class DishServiceImpl implements DishService {
         dishVO.setFlavors(dishFlavourMapper.getDishFlavourById(id));
 
         return dishVO;
+    }
+
+
+    /**
+     * 修改菜品，同时更新口味
+     * 口味的处理策略：先全删后全插，比逐条比对简单可靠
+     *
+     * @param dishDTO
+     */
+    @Override
+    @Transactional
+    public void update(DishDTO dishDTO) {
+        // 1、修改菜品基本信息（updateTime / updateUser 由 AutoFill 切面填充）
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishMapper.update(dish);
+
+        // 2、删除该菜品原有的全部口味
+        Long dishId = dishDTO.getId();
+        dishFlavourMapper.delete(dishId);
+
+        // 3、插入新口味。必须补上 dishId，否则会插出 dish_id 为 null 的孤儿数据
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (flavors != null && !flavors.isEmpty()) {
+            flavors.forEach(flavor -> flavor.setDishId(dishId));
+            dishFlavourMapper.insert(flavors);
+        }
     }
 }
 

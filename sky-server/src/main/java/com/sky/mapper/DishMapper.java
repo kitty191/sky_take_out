@@ -66,4 +66,15 @@ public interface DishMapper {
      * @return
      */
     DishVO getById(Long id);
+
+
+    /**
+     * 修改菜品信息
+     * 传实体 Dish 而不是 DishDTO：切面需要调用 setUpdateTime/setUpdateUser，
+     * DishDTO 没有这两个字段，反射会失败
+     *
+     * @param dish
+     */
+    @AutoFill(value = OperationType.UPDATE)
+    void update(Dish dish);
 }

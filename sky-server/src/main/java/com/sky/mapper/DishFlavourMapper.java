@@ -10,6 +10,7 @@ public interface DishFlavourMapper {
 
     /**
      * 添加菜品口味
+     * 不加 @AutoFill：dish_flavor 表没有公共字段，且切面只处理第 1 个参数，对 List 无法生效
      *
      * @param flavors
      */
@@ -22,6 +23,14 @@ public interface DishFlavourMapper {
      * @param validId
      */
     void deleteById(List<Long> validId);
+
+
+    /**
+     * 根据菜品ID删除对应口味（修改时操作）
+     *
+     * @param dishId
+     */
+    void delete(Long dishId);
 
 
     /**
